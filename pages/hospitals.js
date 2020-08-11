@@ -13,8 +13,8 @@ export default function Hospitals({ hospitals }) {
         <main className={styles.main}>
           <h1>Suggested hospitals:</h1>
             <ul>
-                {hospitals._embedded.hospitals.map((hospital, index) => (
-                    <a><li key={index}>{hospital.name}</li></a>
+                {hospitals._embedded.hospitals.map((hospital) => (
+                    <a><li key={hospital.id}>{hospital.name}</li></a>
                 ))}
             </ul>
         </main>

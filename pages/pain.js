@@ -2,8 +2,11 @@ import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
+import { useRouter } from 'next/router'
+
 export default function Pain() {
-const painLevels = ["No pain", "Discomforting", "Distressing", "Intense"].map((painLevel) => <Link href="/hospitals"><a><li>{painLevel}</li></a></Link>)
+const router = useRouter()
+const painLevels = ["No pain", "Discomforting", "Distressing", "Intense"].map((painLevel) => <Link href={{pathname: "/hospitals", query: {illness: router.query["illness"], pain: painLevel}}}><a><li>{painLevel}</li></a></Link>)
 
     return (
         <div className={styles.container}>
@@ -17,7 +20,6 @@ const painLevels = ["No pain", "Discomforting", "Distressing", "Intense"].map((p
             <ul>
                 { painLevels }
             </ul>
-    
             </main>
         </div>
     )
