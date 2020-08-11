@@ -13,9 +13,9 @@ export default function Home({ illnesses }) {
       <main className={styles.main}>
         <h1>Select an illness:</h1>
         <ul>
-          {illnesses._embedded.illnesses.map((illness) => (
+          {illnesses._embedded.illnesses.map((illness, index) => (
             <Link href={{ pathname: '/pain', query: {illness: illness.illness.name} }}>
-              <a><li key={illnesses.id}>{illness.illness.name}</li></a>
+              <a><li key={index}>{illness.illness.name}</li></a>
             </Link>
           ))}
         </ul>

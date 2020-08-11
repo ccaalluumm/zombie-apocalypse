@@ -5,8 +5,29 @@ import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 
 export default function Pain() {
-const router = useRouter()
-const painLevels = ["No pain", "Discomforting", "Distressing", "Intense"].map((painLevel) => <Link href={{pathname: "/hospitals", query: {illness: router.query["illness"], pain: painLevel}}}><a><li>{painLevel}</li></a></Link>)
+    const router = useRouter()
+    const painLevels = [
+        {
+            id: 0,
+            description: "No pain"
+        },
+        {
+            id: 1,
+            description: "Discomforting"
+        },
+        {
+            id: 2,
+            description: "Distressing"
+        },
+        {
+            id: 3,
+            description: "Severe"
+        },
+        {
+            id: 4,
+            description: "Intense"
+        },
+    ];
 
     return (
         <div className={styles.container}>
@@ -14,11 +35,15 @@ const painLevels = ["No pain", "Discomforting", "Distressing", "Intense"].map((p
             <title>Pain Level</title>
             <link rel="icon" href="/favicon.ico" />
             </Head>
-    
+
             <main className={styles.main}>
             <h1>Select a pain level:</h1>
             <ul>
-                { painLevels }
+                {painLevels.map(painLevel => (
+                    <Link href={{pathname: "/hospitals", query: {illness: router.query["illness"], pain: painLevel.id}}}>
+                        <a><li key={painLevel.id}>{painLevel.description}</li></a>
+                    </Link>
+                ))}
             </ul>
             </main>
         </div>
