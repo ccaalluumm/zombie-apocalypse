@@ -15,7 +15,7 @@ export default function Home({ illnesses }) {
         <ul>
           {illnesses._embedded.illnesses.map((illness, index) => (
             <Link href={{ pathname: '/pain', query: {illness: illness.illness.name} }}>
-              <li key={index}>{illness.illness.name}</li>
+              <a><li key={index}>{illness.illness.name}</li></a>
             </Link>
           ))}
         </ul>
@@ -30,6 +30,6 @@ export async function getServerSideProps() {
   const res = await fetch('http://dmmw-api.australiaeast.cloudapp.azure.com:8080/illnesses')
   const illnesses = await res.json()
 
-  // Return the illnesses so that they can be used as a prop at build time
+  // Return the illnesses so that they can be used as a prop
   return { props: { illnesses } }
 }
