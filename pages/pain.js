@@ -1,7 +1,10 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 export default function Pain() {
+const painLevels = ["No pain", "Discomforting", "Distressing", "Intense", "Unimaginably unspeakable"].map((painLevel) => <Link href="/hospitals"><li>{painLevel}</li></Link>)
+
     return (
         <div className={styles.container}>
             <Head>
@@ -12,11 +15,7 @@ export default function Pain() {
             <main className={styles.main}>
             <h1>Select a pain level:</h1>
             <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
+                { painLevels }
             </ul>
     
             </main>
