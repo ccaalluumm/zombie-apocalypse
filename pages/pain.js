@@ -32,7 +32,7 @@ export default function Pain() {
     return (
         <div className={styles.container}>
             <Head>
-            <title>Pain Level</title>
+            <title>Pain Levels</title>
             <link rel="icon" href="/favicon.ico" />
             </Head>
 
