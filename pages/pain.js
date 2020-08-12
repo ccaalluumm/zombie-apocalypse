@@ -37,8 +37,7 @@ export default function Pain() {
             </Head>
 
             <main className={styles.main}>
-            <h1>Select a pain level:</h1>
-            <h4>{router.query["illness"]}</h4>
+            <h1>Select a pain level ({router.query["illness"]}):</h1>
             <ul>
                 {painLevels.map(painLevel => (
                     <Link href={{pathname: "/hospitals", query: {illness: router.query["illness"], pain: painLevel.id}}} key={painLevel.id}>

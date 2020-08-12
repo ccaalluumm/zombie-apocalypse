@@ -10,7 +10,7 @@ export default function Hospitals({ hospitals }) {
     const levelOfPain = router.query["pain"];
 
     // Sort the hospitals based on waiting time
-    hospitals.sort(GetSortOrder(levelOfPain));
+    hospitals.sort(getSortOrder(levelOfPain));
 
     return (
         <div className={styles.container}>
@@ -20,11 +20,11 @@ export default function Hospitals({ hospitals }) {
         </Head>
   
         <main className={styles.main}>
-          <h1>Suggested hospitals:</h1>
+          <h1>Suggested hospitals (waiting time):</h1>
             <ul>
                 {hospitals.map((hospital) => (
                     <li key={hospital.id}>
-                        {hospital.name}: {hospital["waitingList"][levelOfPain]["patientCount"] * hospital["waitingList"][levelOfPain]["averageProcessTime"]} minutes wait time
+                        <strong>{hospital.name}</strong>: {calculateWaitTime(hospital, levelOfPain)} 
                     </li>
                 ))}
             </ul>
@@ -43,13 +43,31 @@ export async function getServerSideProps() {
     return { props: { hospitals } }
 }
 
-function GetSortOrder(pain) {
-    return function(a, b) {    
-        if (a["waitingList"][pain]["patientCount"] * a["waitingList"][pain]["averageProcessTime"] > b["waitingList"][pain]["patientCount"] * b["waitingList"][pain]["averageProcessTime"]) {    
+function getSortOrder(pain) {
+    return function(a, b) {
+        if (getTotalWaitTime(a, pain) > getTotalWaitTime(b, pain)) {    
             return 1;    
-        } else if (a["waitingList"][pain]["patientCount"] * a["waitingList"][pain]["averageProcessTime"] < b["waitingList"][pain]["patientCount"] * b["waitingList"][pain]["averageProcessTime"]) {    
+        } else if (getTotalWaitTime(a, pain) < getTotalWaitTime(b, pain)) {    
             return -1;    
         }    
-        return 0;    
+        return 0;
     }    
-}   
+}
+
+function getTotalWaitTime(hospital, levelOfPain) {
+    return hospital["waitingList"][levelOfPain]["patientCount"] * hospital["waitingList"][levelOfPain]["averageProcessTime"];
+}
+
+function calculateWaitTime(hospital, levelOfPain) {
+    const patientCount = hospital["waitingList"][levelOfPain]["patientCount"];
+    const averageProcessTime = hospital["waitingList"][levelOfPain]["averageProcessTime"];
+    const waitTime = patientCount * averageProcessTime;
+
+    // Calculate the number of hours and minutes
+    if (waitTime >= 60) {
+        return Math.floor(waitTime / 60) + " hours, " + waitTime % 60 + " mins";
+    }
+
+    // Minutes is less than 60, so just return the number
+    return waitTime + " mins";
+}

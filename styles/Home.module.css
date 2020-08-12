@@ -121,3 +121,16 @@
     flex-direction: column;
   }
 }
+
+ul {
+  padding: 0 0 0 0;
+  float: left;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+ul li:hover {
+  color: #ff0066;
+}
