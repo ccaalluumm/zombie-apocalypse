@@ -122,15 +122,15 @@
   }
 }
 
-ul {
+.main ul {
   padding: 0 0 0 0;
   float: left;
 }
 
-ul li {
+.main ul li {
   list-style-type: none;
 }
 
-ul li:hover {
+.main ul li:hover {
   color: #ff0066;
 }
