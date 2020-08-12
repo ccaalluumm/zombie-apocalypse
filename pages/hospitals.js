@@ -24,7 +24,7 @@ export default function Hospitals({ hospitals }) {
             <ul>
                 {hospitals.map((hospital) => (
                     <li key={hospital.id}>
-                        {hospital.name}
+                        {hospital.name}: {hospital["waitingList"][levelOfPain]["patientCount"] * hospital["waitingList"][levelOfPain]["averageProcessTime"]} minutes wait time
                     </li>
                 ))}
             </ul>
