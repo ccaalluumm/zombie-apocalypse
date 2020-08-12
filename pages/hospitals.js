@@ -23,7 +23,9 @@ export default function Hospitals({ hospitals }) {
           <h1>Suggested hospitals:</h1>
             <ul>
                 {hospitals.map((hospital) => (
-                    <a><li key={hospital.id}>{hospital.name}</li></a>
+                    <li key={hospital.id}>
+                        {hospital.name}
+                    </li>
                 ))}
             </ul>
         </main>

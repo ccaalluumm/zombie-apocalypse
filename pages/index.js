@@ -13,9 +13,13 @@ export default function Home({ illnesses }) {
       <main className={styles.main}>
         <h1>Select an illness:</h1>
         <ul>
-          {illnesses._embedded.illnesses.map((illness, index) => (
-            <Link href={{ pathname: '/pain', query: {illness: illness.illness.name} }}>
-              <a><li key={index}>{illness.illness.name}</li></a>
+          {illnesses.map((illness) => (
+            <Link href={{ pathname: '/pain', query: {illness: illness.illness.name} }} key={illness.illness.id}>
+              <a>
+                <li>
+                  {illness.illness.name}
+                </li>
+              </a>
             </Link>
           ))}
         </ul>
@@ -28,7 +32,8 @@ export default function Home({ illnesses }) {
 export async function getServerSideProps() {
   // Call the external API containing the known illnesses
   const res = await fetch('http://dmmw-api.australiaeast.cloudapp.azure.com:8080/illnesses')
-  const illnesses = await res.json()
+  const data = await res.json()
+  const illnesses = data["_embedded"]["illnesses"];
 
   // Return the illnesses so that they can be used as a prop
   return { props: { illnesses } }
