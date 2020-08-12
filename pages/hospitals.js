@@ -6,13 +6,11 @@ import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
 
 export default function Hospitals({ hospitals }) {
-    console.log(hospitals)
     const router = useRouter();
     const levelOfPain = router.query["pain"];
+
     // Sort the hospitals based on waiting time
-    const averageProcessTime = "averageProcessTime";
-    const patientCount = "patientCount";
-    let hospitalz = hospitals.sort(getSortOrder(averageProcessTime, patientCount, levelOfPain));
+    hospitals.sort(GetSortOrder(levelOfPain));
 
     return (
         <div className={styles.container}>
@@ -24,7 +22,7 @@ export default function Hospitals({ hospitals }) {
         <main className={styles.main}>
           <h1>Suggested hospitals:</h1>
             <ul>
-                {hospitalz.map((hospital) => (
+                {hospitals.map((hospital) => (
                     <a><li key={hospital.id}>{hospital.name}</li></a>
                 ))}
             </ul>
@@ -43,13 +41,13 @@ export async function getServerSideProps() {
     return { props: { hospitals } }
 }
 
-function getSortOrder(prop1, prop2, levelOfPain) {
-    console.log(prop1);
-    return function(x, y) {
-        if (x["waitingList"][levelOfPain][prop1] * x["waitingList"][levelOfPain][prop2] < y["waitingList"][levelOfPain][prop1] * y["waitingList"][levelOfPain][prop2]) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-}
+function GetSortOrder(pain) {
+    return function(a, b) {    
+        if (a["waitingList"][pain]["patientCount"] * a["waitingList"][pain]["averageProcessTime"] > b["waitingList"][pain]["patientCount"] * b["waitingList"][pain]["averageProcessTime"]) {    
+            return 1;    
+        } else if (a["waitingList"][pain]["patientCount"] * a["waitingList"][pain]["averageProcessTime"] < b["waitingList"][pain]["patientCount"] * b["waitingList"][pain]["averageProcessTime"]) {    
+            return -1;    
+        }    
+        return 0;    
+    }    
+}   
