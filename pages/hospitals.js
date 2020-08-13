@@ -63,11 +63,11 @@ function calculateWaitTime(hospital, levelOfPain) {
     const averageProcessTime = hospital["waitingList"][levelOfPain]["averageProcessTime"];
     const waitTime = patientCount * averageProcessTime;
 
-    // Calculate the number of hours and minutes
+    // Calculate the number of hours and minutes - return only hours if total minutes fits into a whole number of hours
     if (waitTime >= 60) {
-        return Math.floor(waitTime / 60) + " hours, " + waitTime % 60 + " mins";
+        return waitTime % 60 != 0 ? Math.floor(waitTime / 60) + " hours, " + waitTime % 60 + " mins" : Math.floor(waitTime / 60) + " hours"
     }
 
-    // Minutes is less than 60, so just return the number
+    // Minutes is less than 60, so just return the total minute
     return waitTime + " mins";
 }
