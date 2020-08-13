@@ -12,7 +12,7 @@ export default function Hospitals({ hospitals }) {
     const createPatient = async (illness, levelOfPain, hospital) => {
         console.log("REQ DATA:\n" + illness + "\n" + levelOfPain);
         try {
-            fetch('http://localhost:3000/api/patients', {
+            fetch('http://localhost/api/patients', {
                 method: 'POST',
                 headers: {
                     "Accept": "application/json",
