@@ -1,12 +1,29 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import styles from '../styles/Home.module.css';
 
-import { useRouter } from 'next/router'
-
-import styles from '../styles/Home.module.css'
 
 export default function Hospitals({ hospitals }) {
     const router = useRouter();
     const levelOfPain = router.query["pain"];
+    const illness = router.query["illness"];
+
+    const createPatient = async (illness, levelOfPain) => {
+        console.log("REQ DATA:\n" + illness + "\n" + levelOfPain);
+        try {
+            fetch('http://localhost:3000/api/patients', {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({illness: illness, pain: levelOfPain})
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     // Sort the hospitals based on waiting time
     hospitals.sort(getSortOrder(levelOfPain));
@@ -22,15 +39,20 @@ export default function Hospitals({ hospitals }) {
           <h1>Suggested hospitals (waiting time):</h1>
             <ul>
                 {hospitals.map((hospital) => (
-                    <li key={hospital.id}>
-                        <strong>{hospital.name}</strong>: {calculateWaitTime(hospital, levelOfPain)} 
-                    </li>
+                    <Link href="/api/patients" key={hospital.id}>
+                        <a>
+                            <li key={hospital.id} onClick={() => createPatient(illness, levelOfPain)}>
+                                <strong>{hospital.name}</strong>: {calculateWaitTime(hospital, levelOfPain)} 
+                            </li>
+                        </a>
+                    </Link>
                 ))}
             </ul>
         </main>
       </div>
     )
 }
+
 
 export async function getServerSideProps() {
     // Call the external API requesting the list of available hospitals
@@ -41,6 +63,7 @@ export async function getServerSideProps() {
     // Return the hospitals so that they can be used as a prop
     return { props: { hospitals } }
 }
+
 
 function getSortOrder(pain) {
     return function(a, b) {
@@ -53,9 +76,11 @@ function getSortOrder(pain) {
     }    
 }
 
+
 function getTotalWaitTime(hospital, levelOfPain) {
     return hospital["waitingList"][levelOfPain]["patientCount"] * hospital["waitingList"][levelOfPain]["averageProcessTime"];
 }
+
 
 function calculateWaitTime(hospital, levelOfPain) {
     const patientCount = hospital["waitingList"][levelOfPain]["patientCount"];
@@ -70,3 +95,5 @@ function calculateWaitTime(hospital, levelOfPain) {
     // Minutes is less than 60, so just return the total minute
     return waitTime + " mins";
 }
+
+
