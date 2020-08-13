@@ -12,7 +12,7 @@ export default function Hospitals({ hospitals }) {
     const createPatient = async (illness, levelOfPain, hospital) => {
         console.log("REQ DATA:\n" + illness + "\n" + levelOfPain);
         try {
-            fetch('http://localhost/api/patients', {
+            fetch('http://zombie-apocalypse.vercel.app/api/patients', {
                 method: 'POST',
                 headers: {
                     "Accept": "application/json",
