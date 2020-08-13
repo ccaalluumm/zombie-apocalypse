@@ -9,7 +9,7 @@ export default function Hospitals({ hospitals }) {
     const levelOfPain = router.query["pain"];
     const illness = router.query["illness"];
 
-    const createPatient = async (illness, levelOfPain) => {
+    const createPatient = async (illness, levelOfPain, hospital) => {
         console.log("REQ DATA:\n" + illness + "\n" + levelOfPain);
         try {
             fetch('http://localhost:3000/api/patients', {
@@ -18,7 +18,7 @@ export default function Hospitals({ hospitals }) {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({illness: illness, pain: levelOfPain})
+                body: JSON.stringify({illness: illness, pain: levelOfPain, hospital: hospital})
             })
         } catch (error) {
             console.log(error);
@@ -41,7 +41,7 @@ export default function Hospitals({ hospitals }) {
                 {hospitals.map((hospital) => (
                     <Link href="/api/patients" key={hospital.id}>
                         <a>
-                            <li key={hospital.id} onClick={() => createPatient(illness, levelOfPain)}>
+                            <li key={hospital.id} onClick={() => createPatient(illness, levelOfPain, hospital.name)}>
                                 <strong>{hospital.name}</strong>: {calculateWaitTime(hospital, levelOfPain)} 
                             </li>
                         </a>

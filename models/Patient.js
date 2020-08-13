@@ -8,6 +8,10 @@ const PatientSchema = new mongoose.Schema({
     pain: {
         type: Number,
         required: [true, 'Please choose a pain level']
+    },
+    hospital: {
+        type: String,
+        required: [true, 'Please choose a hospital']
     }
 })
 
